@@ -118,4 +118,4 @@ if uploaded_file is not None:
   st.write(csv_file2)
   #st.markdown(f"[Download]({csv_file2.to_csv})")  
 if uploaded_file is None:
-    st.stop()
+    st.write("Загрузи файл, :wolf:")
