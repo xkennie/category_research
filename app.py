@@ -103,7 +103,7 @@ st.title("Аналитический отчет")
 # Create a file uploader
 uploaded_file = st.file_uploader("Select a CSV file", type=["csv"])
 if uploaded_file is not None:
-  file_contents = uploaded_file.read()
+  #file_contents = uploaded_file.read()
   df_from_file = pd.read_csv(uploaded_file, sep = ";")  
   # Process the uploaded file
   csv_file1, csv_file2 = analisys(df_from_file)
