@@ -84,7 +84,7 @@ def price_segmentation(data):
 def goods_list(t, data):
   #фильтр
   t = t.sort_values(by = "Коэффициент", ascending = False)
-  df = data[data["Price range"] == t["Ценовой сегмент"][0]]
+  df = data[data["Price range"] == t.iloc[0]["Ценовой сегмент"]]
 
   proxy_df = df[["Name", "SKU", "Category", "Brand", "Seller", "Median price", "Sales", "Revenue", "Price range", "Lost profit", "Days with sales", "First Date"]]
   proxy_df["URL"] = proxy_df["SKU"].apply(lambda x: "https://www.wildberries.ru/catalog/"+str(x)+"/detail.aspx?targetUrl=SP")
