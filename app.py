@@ -113,9 +113,9 @@ if uploaded_file is not None:
   st.write("Output CSV files:")
   st.write("Анализ ЦС:")
   st.write(csv_file1)
-  st.markdown(f"[Download]({csv_file1.to_csv})")  
+  #st.markdown(f"[Download]({csv_file1.to_csv})")  
   st.write("Список товаров:")
   st.write(csv_file2)
-  st.markdown(f"[Download]({csv_file2.to_csv})")  
+  #st.markdown(f"[Download]({csv_file2.to_csv})")  
 if uploaded_file is None:
     st.stop()
