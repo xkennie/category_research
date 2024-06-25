@@ -110,7 +110,7 @@ if uploaded_file is not None:
   csv_file1, csv_file2 = analisys(df_from_file)
 
   # Display the output CSV files
-  st.write("Output CSV files:")
+  st.write("Ниже можно скачать крутые таблички :smile: ")
   st.write("Анализ ЦС:")
   st.write(csv_file1)
   #st.markdown(f"[Download]({csv_file1.to_csv})")  
