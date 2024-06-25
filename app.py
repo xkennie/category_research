@@ -102,14 +102,14 @@ def analisys(data):
 st.title("Аналитический отчет")
 # Create a file uploader
 uploaded_file = st.file_uploader("Select a CSV file", type=["csv"])
-
+df_from_file = pd.read_csv(uploaded_file)
 if uploaded_file:
   # Process the uploaded file
-  csv_file1, csv_file2 = analisys(uploaded_file)
+  csv_file1, csv_file2 = analisys(df_from_file)
 
   # Display the output CSV files
   st.write("Output CSV files:")
-  st.write("File 1:")
+  st.write("Анализ ЦС:")
   st.write(csv_file1)
-  st.write("File 2:")
+  st.write("Список товаров:")
   st.write(csv_file2)
