@@ -93,9 +93,9 @@ def goods_list(t, data):
 
 def analisys(data):
   t = price_segmentation(data_preprocess(data))
-  csv_file1 = t.to_csv("ЦС.csv")
+  csv_file1 = t
   g = goods_list(t, data)
-  csv_file2 = g.to_csv("СписокТоваров.csv")
+  csv_file2 = g
   return csv_file1, csv_file2
 
 
@@ -113,9 +113,9 @@ if uploaded_file is not None:
   st.write("Output CSV files:")
   st.write("Анализ ЦС:")
   st.write(csv_file1)
-  st.markdown(f"[Download]({csv_file1})")  
+  st.markdown(f"[Download]({csv_file1.to_csv("Анализ ЦС.csv")})")  
   st.write("Список товаров:")
   st.write(csv_file2)
-  st.markdown(f"[Download]({csv_file2})")  
+  st.markdown(f"[Download]({csv_file2.to_csv("Список товаров.csv")})")  
 if uploaded_file is None:
     st.stop()
