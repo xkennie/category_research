@@ -89,14 +89,30 @@ def goods_list(t, data):
   proxy_df = df[["Name", "SKU", "Category", "Brand", "Seller", "Median price", "Sales", "Revenue", "Price range", "Lost profit", "Days with sales", "First Date"]]
   proxy_df["URL"] = proxy_df["SKU"].apply(lambda x: "https://www.wildberries.ru/catalog/"+str(x)+"/detail.aspx?targetUrl=SP")
   return proxy_df[:10]
-
-
+    
+def quantity_estimate(t, data):
+    sales, revenue, sku_count, sales_per_sku, revenue_per_sku, quantity = [], [], [], [], [], []
+    t = t.sort_values(by = "Коэффициент", ascending = False)
+    df = data[data["Price range"] == t["Ценовой сегмент"][0]]
+    df["Cumulative revenue"] = np.cumsum(df["Revenue"])
+    df["Group A"] = df["Cumulative revenue"].apply(lambda x: 1 if x/df["Revenue"].sum()<0.8 else 0)
+    sales.append(df[df["Group A"] == 1]["Sales"].sum())
+    revenue.append(df[df["Group A"] == 1]["Revenue"].sum())
+    sku_count.append(df[df["Group A"] == 1].shape[0])
+    qe_df = pd.DataFrame({"Количество продаж конкурентов": sales, "Выручка конкурентов": revenue, "Количество SKU": sku_count})
+    qe_df["Продажи на SKU/шт."] = qe_df["Количество продаж конкурентов"]/qe_df["Количество SKU"]
+    qe_df["Выручка на SKU"] = qe_df["Выручка конкурентов"]/qe_df["Количество SKU"]
+    qe_df["Количество к закупке"] = round(qe_df["Количество продаж конкурентов"]/qe_df["Количество SKU"], -2)
+    return qe_df
+    
 def analisys(data):
   t = price_segmentation(data_preprocess(data))
   csv_file1 = t
   g = goods_list(t, data)
   csv_file2 = g
-  return csv_file1, csv_file2
+  qe = quantity_estimate(t, data)
+  csv_file3 = qe  
+  return csv_file1, csv_file2, csv_file3
 
 
 st.title("Аналитический отчет")
@@ -106,7 +122,7 @@ if uploaded_file is not None:
   #file_contents = uploaded_file.read()
   df_from_file = pd.read_csv(uploaded_file, sep = ";")  
   # Process the uploaded file
-  csv_file1, csv_file2 = analisys(df_from_file)
+  csv_file1, csv_file2, csv_file3 = analisys(df_from_file)
 
   # Display the output CSV files
   st.write("Ниже можно скачать крутые таблички :wolf: ")
@@ -115,6 +131,8 @@ if uploaded_file is not None:
   #st.markdown(f"[Download]({csv_file1.to_csv})")  
   st.write("Список товаров:")
   st.write(csv_file2)
-  #st.markdown(f"[Download]({csv_file2.to_csv})")  
+  #st.markdown(f"[Download]({csv_file2.to_csv})") 
+  st.write("Примерный расчет закупки")
+  st.write(csv_file3)
 if uploaded_file is None:
     st.write("Загрузи файл, :wolf:")
