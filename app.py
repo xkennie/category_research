@@ -132,7 +132,7 @@ if uploaded_file is not None:
   st.write("Список топовых товаров в лучшем ценовом сегменте:")
   st.write(csv_file2)
   #st.markdown(f"[Download]({csv_file2.to_csv})") 
-  st.write("Примерный расчет закупки партии")
+  st.write("Примерный расчет закупки партии на WB на рассматриваемый период")
   st.write(csv_file3)
 if uploaded_file is None:
     st.write("Загрузи файл, проверь, чтобы в нем были следующие столбцы :wolf:")
