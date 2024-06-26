@@ -126,13 +126,15 @@ if uploaded_file is not None:
 
   # Display the output CSV files
   st.write("Ниже можно скачать крутые таблички :wolf: ")
-  st.write("Анализ ЦС:")
+  st.write("Анализ ценовых сегментов:")
   st.write(csv_file1)
   #st.markdown(f"[Download]({csv_file1.to_csv})")  
-  st.write("Список товаров:")
+  st.write("Список топовых товаров в лучшем ценовом сегменте:")
   st.write(csv_file2)
   #st.markdown(f"[Download]({csv_file2.to_csv})") 
-  st.write("Примерный расчет закупки")
+  st.write("Примерный расчет закупки партии")
   st.write(csv_file3)
 if uploaded_file is None:
-    st.write("Загрузи файл, :wolf:")
+    st.write("Загрузи файл, проверь, чтобы в нем были следующие столбцы :wolf:")
+    st.write(""Name", "SKU", "Category", "Brand", "Seller", "Median price", "Sales", "Revenue", "Price range", "Lost profit", "Days with sales", "First Date", "Final price")
+    st.write("Без них скрипт работать не будет")
