@@ -93,7 +93,7 @@ def goods_list(t, data):
 def quantity_estimate(t, data):
     sales, revenue, sku_count, sales_per_sku, revenue_per_sku, quantity = [], [], [], [], [], []
     t = t.sort_values(by = "Коэффициент", ascending = False)
-    df = data[data["Price range"] == t["Ценовой сегмент"][0]]
+    df = data[data["Price range"] == t.iloc[0]["Ценовой сегмент"]]
     df["Cumulative revenue"] = np.cumsum(df["Revenue"])
     df["Group A"] = df["Cumulative revenue"].apply(lambda x: 1 if x/df["Revenue"].sum()<0.8 else 0)
     sales.append(df[df["Group A"] == 1]["Sales"].sum())
