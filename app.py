@@ -136,5 +136,5 @@ if uploaded_file is not None:
   st.write(csv_file3)
 if uploaded_file is None:
     st.write("Загрузи файл, проверь, чтобы в нем были следующие столбцы :wolf:")
-    st.write("Name, SKU, Category, Brand, Seller, Median price, Sales, Revenue, Price range, Lost profit, Days with sales, First Date, Final price")
+    st.write("Name, SKU, Category, Brand, Seller, Median price, Sales, Revenue, Lost profit, Days with sales, First Date, Final price")
     st.write("Без них скрипт работать не будет")
