@@ -111,7 +111,7 @@ def analisys(data, Range_name):
   csv_file1 = t
   g = goods_list(Range_name, data)
   csv_file2 = g
-  qe = quantity_estimate(t, data)
+  qe = quantity_estimate(Range_name, data)
   csv_file3 = qe  
   return csv_file1, csv_file2, csv_file3
 
