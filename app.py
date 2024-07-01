@@ -81,19 +81,20 @@ def price_segmentation(data):
   return final_ps
 
 
-def goods_list(t, data):
+def goods_list(Range_name, data):
   #фильтр
-  t = t.sort_values(by = "Коэффициент", ascending = False)
-  df = data[data["Price range"] == t.iloc[0]["Ценовой сегмент"]]
-
+  #t = t.sort_values(by = "Коэффициент", ascending = False)
+  #df = data[data["Price range"] == t.iloc[0]["Ценовой сегмент"]]
+  df = data[data["Price range"] == Range_name]
   proxy_df = df[["Name", "SKU", "Category", "Brand", "Seller", "Median price", "Sales", "Revenue", "Price range", "Lost profit", "Days with sales", "First Date"]]
   proxy_df["URL"] = proxy_df["SKU"].apply(lambda x: "https://www.wildberries.ru/catalog/"+str(x)+"/detail.aspx?targetUrl=SP")
   return proxy_df[:10]
     
-def quantity_estimate(t, data):
+def quantity_estimate(Range_name, data):
     sales, revenue, sku_count, sales_per_sku, revenue_per_sku, quantity = [], [], [], [], [], []
-    t = t.sort_values(by = "Коэффициент", ascending = False)
-    df = data[data["Price range"] == t.iloc[0]["Ценовой сегмент"]]
+    #t = t.sort_values(by = "Коэффициент", ascending = False)
+    #df = data[data["Price range"] == t.iloc[0]["Ценовой сегмент"]]
+    df = data[data["Price range"] == Range_name]
     df["Cumulative revenue"] = np.cumsum(df["Revenue"])
     df["Group A"] = df["Cumulative revenue"].apply(lambda x: 1 if x/df["Revenue"].sum()<0.8 else 0)
     sales.append(df[df["Group A"] == 1]["Sales"].sum())
@@ -105,10 +106,10 @@ def quantity_estimate(t, data):
     qe_df["Количество к закупке"] = round(qe_df["Количество продаж конкурентов"]/qe_df["Количество SKU"], -2)
     return qe_df
     
-def analisys(data):
+def analisys(data, Range_name):
   t = price_segmentation(data_preprocess(data))
   csv_file1 = t
-  g = goods_list(t, data)
+  g = goods_list(Range_name, data)
   csv_file2 = g
   qe = quantity_estimate(t, data)
   csv_file3 = qe  
@@ -117,21 +118,23 @@ def analisys(data):
 
 st.title("Аналитический отчет")
 # Create a file uploader
+Range_name = "Эконом"
 uploaded_file = st.file_uploader("Select a CSV file", type=["csv"])
 if uploaded_file is not None:
   #file_contents = uploaded_file.read()
+  Range_name = st.selectbox(
+    "Выберите ценовой сегмент",
+    ("Эконом", "Эконом+", "Средний-", "Средний", "Средний+", "Бизнес-", "Бизнес","Бизнес+","Люкс"))  
   df_from_file = pd.read_csv(uploaded_file, sep = ";")  
   # Process the uploaded file
-  csv_file1, csv_file2, csv_file3 = analisys(df_from_file)
+  csv_file1, csv_file2, csv_file3 = analisys(df_from_file, Range_name)
 
   # Display the output CSV files
   st.write("Ниже можно скачать крутые таблички :wolf: ")
   st.write("Анализ ценовых сегментов:")
-  st.write(csv_file1)
-  #st.markdown(f"[Download]({csv_file1.to_csv})")  
+  st.write(csv_file1)  
   st.write("Список топовых товаров в лучшем ценовом сегменте:")
   st.write(csv_file2)
-  #st.markdown(f"[Download]({csv_file2.to_csv})") 
   st.write("Примерный расчет закупки партии на WB на рассматриваемый период")
   st.write(csv_file3)
 if uploaded_file is None:
