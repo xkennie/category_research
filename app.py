@@ -119,12 +119,15 @@ def analisys(data, Range_name):
 st.title("Аналитический отчет")
 # Create a file uploader
 Range_name = "Эконом"
+Range_name = st.selectbox(
+    "Выберите ценовой сегмент",
+    ("Эконом", "Эконом+", "Средний-", "Средний", "Средний+", "Бизнес-", "Бизнес","Бизнес+","Люкс"))  
 uploaded_file = st.file_uploader("Select a CSV file", type=["csv"])
 if uploaded_file is not None:
   #file_contents = uploaded_file.read()
-  Range_name = st.selectbox(
-    "Выберите ценовой сегмент",
-    ("Эконом", "Эконом+", "Средний-", "Средний", "Средний+", "Бизнес-", "Бизнес","Бизнес+","Люкс"))  
+  #Range_name = st.selectbox(
+  #"Выберите ценовой сегмент",
+  #("Эконом", "Эконом+", "Средний-", "Средний", "Средний+", "Бизнес-", "Бизнес","Бизнес+","Люкс"))  
   df_from_file = pd.read_csv(uploaded_file, sep = ";")  
   # Process the uploaded file
   csv_file1, csv_file2, csv_file3 = analisys(df_from_file, Range_name)
